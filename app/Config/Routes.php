@@ -36,8 +36,11 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'EmployeeController::index');
+$routes->post('/', 'EmployeeController::index');
 
 $routes->post('/add-user', 'EmployeeController::add_user');
+$routes->post('/delete/(:segment)', 'EmployeeController::delete_user/$1');
+$routes->post('/edit/(:segment)', 'EmployeeController::edit_user/$1');
 
 /*
  * --------------------------------------------------------------------

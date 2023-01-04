@@ -17,7 +17,6 @@ class Employee extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'code' => ['type'  => 'TEXT'],
             'name' => ['type'  => 'TEXT'],
             'department' => ['type'  => 'TEXT'],
             'position' => ['type'  => 'TEXT'],

@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JobList</title>
+  <title>Employee</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="container">
       <a href="../../index3.html" class="navbar-brand">
         <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">JobList</span>
+        <span class="brand-text font-weight-light">COdeIgniter CRUD Test</span>
       </a>
 
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +55,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">JobList Posting - <small>CRUD TEST by ROMMEL</small></h1>
+            <h1 class="m-0">List Employee - <small>CRUD TEST by ROMMEL</small></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -66,15 +66,72 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="content">
       <div class="container">
         <div class="row">
-            <div class="col-12 mb-3">
-                <button class="btn btn-lg btn-primary" id="create-btn">
-                    Create Job
-                </button>
+            <div class="col-md-9">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-4">
+                        
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">@</span>
+                                </div>
+                                <input type="text" name="name" class="form-control" placeholder="name">
+                            </div>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="form-control" name="department">
+                                    <option value="0">All Department</option>
+                                    <?php foreach($departments as $department) { ?>
+                                    <option value="<?= array_values($department)[0] ?>"><?= array_values($department)[0] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="form-control" name="position">
+                                    <option value="0">All Position</option>
+                                    <?php foreach($positions as $position) { ?>
+                                    <option value="<?= array_values($position)[0] ?>"><?= array_values($position)[0] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="form-control" name="status">
+                                    <option value="0">All Status</option>
+                                    <option value="Active">Inactive</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Resigned">Resigned</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" class="btn btn-sm  btn-block btn-primary" value="Filter"/>
+                        </div>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-sm btn-block btn-primary" id="create-btn">
+                            + Add User
+                        </button>
+                    </div>                    
+                </div>
+                
             </div>
             <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Job List</h3>
+                <h3 class="card-title">Employees</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0">
@@ -93,13 +150,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <tbody>
                    <?php foreach ($employees as $employee){ ?>
                         <tr>
-                            <td><?= $employee['code'] ?></td>
+                            <td><span style="color:blue;">G-<?= str_pad($employee['id'],5,'0',STR_PAD_LEFT) ?></span></td>
                             <td><?= $employee['name'] ?></td>
                             <td><?= $employee['department'] ?></td>
                             <td><?= $employee['position'] ?></td>
                             <td><?= date('Y-m-d',strtotime($employee['hired_date'])) ?></td>
                             <td><?= $employee['status'] ?></td>
-                            <td></td>
+                            <td>
+                                <button class="btn btn-sm btn-success" onclick="load_user('<?= $employee['id'] ?>','<?= $employee['name'] ?>','<?= $employee['position'] ?>','<?= $employee['department'] ?>','<?= $employee['status'] ?>')">
+                                    Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="delete_user(<?= $employee['id'] ?>)">
+                                    Delete
+                                </button> 
+                            </td>
                                 
                         </tr>
                    <?php } ?>
@@ -127,12 +191,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </button>
             </div>
             <div class="modal-body">
-
-                <div class="form-group">
-                    <label for="code">Code</label>
-                    <input type="text" class="form-control" id="code" placeholder="CODE">
-                </div>
-
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Full Name">
@@ -141,6 +199,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="form-group">
                     <label for="department">Department</label>
                     <input type="text" class="form-control" id="department" placeholder="Department">
+                </div>
+
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" class="form-control" id="position" placeholder="Position">
                 </div>
 
             </div>
@@ -154,22 +217,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </div>
       <!-- /.modal -->
 
-      <div class="modal fade" id="edit-job">
+      <div class="modal fade" id="edit-user">
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Edit Job</h4>
+              <h4 class="modal-title">Edit User</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-
-                <div class="form-group">
-                    <label for="job_codename">Code</label>
-                    <input type="text" class="form-control" id="edit_code" placeholder="CODE">
-                </div>
-
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="edit_name" placeholder="Full Name">
@@ -180,9 +237,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <input type="text" class="form-control" id="edit_department" placeholder="Department">
                 </div>
 
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" class="form-control" id="edit_position" placeholder="Position">
+                </div>
+
+                <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" id="edit_status">
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                          <option value="Resigned">Resigned</option>
+                        </select>
+                      </div>
+
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-primary" onclick="add_user()">Add User</button>
+              <button type="button" class="btn btn-primary" onclick="edit_user(0)">Save</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -203,7 +274,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- Default to the left -->
-    <strong>Created January 2, 2023 - Test Project</strong>
+    <strong>Created January 4, 2023 - Test Project</strong>
   </footer>
 </div>
 <!-- ./wrapper -->
@@ -228,9 +299,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 
         $('#submit-btn').click(function(){
-            const code          = $('#code').val();
             const name          = $('#name').val();
             const department    = $('#department').val();
+            const position      = $('#position').val();
             
 
             $.ajax(
@@ -238,9 +309,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     url:'/add-user',
                     method: 'POST',
                     data: {
-                        code: code,
                         name: name,
-                        department: department
+                        department: department,
+                        position: position
                     },
                     success: function(data,status){
                         alert(data['result'] + ': ' + data['text']);
@@ -257,17 +328,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         
     });
 
-    function delete_job(id) {
+    function delete_user(id) {
 
         if(!confirm("Are you sure")) return;
 
         $.ajax({
-            url: '/' + id,
+            url: '/delete/' + id,
             method: 'POST',
-            data: {
-                _token: csrf,
-                _method: 'DELETE'
-            },
             success: function(data,status) {
                 alert(data['result'] + ': ' + data['text']);
                 location.reload(true);
@@ -302,25 +369,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     }
 
-    function load_job(id, name, desc) {
+    function load_user(id,name,position,department,status) {
         $('#edit_name').val(name);
-        $('#edit_description').val(desc);
+        $('#edit_department').val(department);
+        $('#edit_position').val(position);
+        $('#edit_status').val(status);
         id_to_edit = id;
-        $('#edit-job').modal('show');
+        $('#edit-user').modal('show');
     }   
 
-    function edit_job(){
-        const job_name = $('#edit_name').val();
-        const job_description = $('#edit_description').val();
+    function edit_user(){
+        const name = $('#edit_name').val();
+        const department = $('#edit_department').val();
+        const position = $('#edit_position').val();
+        const status = $('#edit_status').val();
         
 
         $.ajax({ 
             url: '/edit/' + id_to_edit,
             method:'POST',
             data: {
-            job_name: job_name,
-            job_description: job_description,
-            _token: csrf
+                name: name,
+                department: department,
+                position: position,
+                status: status
             },
         success: function(data,status){
             alert(data['result'] + ': ' + data['text']);
