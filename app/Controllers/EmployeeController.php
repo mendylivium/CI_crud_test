@@ -12,9 +12,7 @@ class EmployeeController extends BaseController
     use ResponseTrait;
 
     public function index()
-    {
-
-        
+    {   
         //
         $employees = new Employee();
         $departments = $employees->select('department')->distinct()->get()->getResultArray();
@@ -44,6 +42,7 @@ class EmployeeController extends BaseController
             'employees' => $employees->orderBy('id','DESC')->paginate(10),
             'departments' => $departments,
             'positions' => $positions,
+            'pager' => $employees->pager
         ]);
     }
 
@@ -53,7 +52,7 @@ class EmployeeController extends BaseController
 
         $rules = [
             'name' => 'required|string|min_length[3]',
-            'department' => 'required|min_length[3]',
+            'department' => 'required|min_length[2]',
             'position' => 'required|min_length[3]'
         ];
 

@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="container">
       <a href="../../index3.html" class="navbar-brand">
         <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">COdeIgniter CRUD Test</span>
+        <span class="brand-text font-weight-light">CodeIgniter CRUD Test</span>
       </a>
 
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -167,8 +167,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 
                         </tr>
                    <?php } ?>
-                  </tbody>
+                </tbody>
+                  
                 </table>
+                <?= $pager->links() ?> 
               </div>
               <!-- /.card-body -->
             </div>
